@@ -6,6 +6,7 @@ const serverRouter = require('server-router')
 const bankai = require('bankai')
 const envify = require('envify')
 const envobj = require('envobj')
+const uuid = require('node-uuid')
 const url = require('url')
 const path = require('path')
 
@@ -41,6 +42,7 @@ const router = serverRouter({ default: '/404' }, [
   ['/bundle.js', (req, res) => client.js(req, res).pipe(res)],
   ['/bundle.css', (req, res) => client.css(req, res).pipe(res)],
   ['/sw.js', (req, res) => worker.js(req, res).pipe(res)],
+  ['/token', { get: makeUUID }],
   ['/:token/subscribe', { post: subscribe }],
   ['/:token/notify', { get: notify }],
   ['/404', (req, res) => send(res, 404)]
@@ -79,4 +81,8 @@ async function notify (req, res, { token }) {
     if (err.notFound) throw createError(404, 'Nothing is subscribed to this token', err)
     throw err
   }
+}
+
+async function makeUUID (req, res) {
+  send(res, 200, { token: uuid.v4() })
 }

@@ -20,6 +20,21 @@ function urlBase64ToUint8Array (base64String) {
   return outputArray
 }
 
+function getToken () {
+  return Promise.resolve(localStorage.token)
+  .then(token => {
+    if (token) return token
+
+    return fetch('/token')
+    .then((result) => result.json())
+    .then(({ token }) => token)
+  })
+}
+
+function saveToken (token) {
+  localStorage.token = token
+}
+
 module.exports = {
   state: {
     notificationPermission: getNotificationPermission(),
@@ -27,19 +42,23 @@ module.exports = {
   },
   effects: {
     updateSubscription: (state, { subscription }, send) => {
-      // TODO: figure out how to use unique tokens
-      return fetch('/some-unique-token/subscribe', {
-        method: 'POST',
-        body: JSON.stringify(subscription)
-      })
-      .then(() => {
-        return send('setSubscription', { subscription })
+      return getToken()
+      .then(function (token) {
+        saveToken(token)
+
+        return fetch(`/${token}/subscribe`, {
+          method: 'POST',
+          body: JSON.stringify(subscription)
+        })
+        .then(() => {
+          return send('setSubscription', { token, subscription })
+        })
       })
     }
   },
   reducers: {
-    setSubscription: (state, { subscription }) => {
-      return Object.assign({}, state, { subscription })
+    setSubscription: (state, { token, subscription }) => {
+      return Object.assign({}, state, { token, subscription })
     },
     updateNotificationPermission: (state) => {
       return Object.assign({}, state, {

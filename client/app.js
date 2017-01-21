@@ -53,7 +53,7 @@ function main (state, prev, send) {
     `
   }
   return html`
-    <main class="helvetica bg-green washed-yellow pa3">
+    <main class="helvetica bg-green washed-blue pa3">
       <h1 class="f5 fw7 mt0 mb3">nanopush</h1>
       <div class="measure-narrow">
         ${content}
