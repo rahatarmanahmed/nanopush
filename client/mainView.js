@@ -1,6 +1,9 @@
 var html = require('choo/html')
 module.exports = (state, prev, send) => {
-
+  if (!state.token) {
+    send('location:set', '/')
+    return html`<div></div>`
+  }
   return html`
     <div>
       <section class="mb6">

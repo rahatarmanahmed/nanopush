@@ -17,6 +17,7 @@
   "dependencies": {
     "bankai": "^5.2.1",
     "barracks-promisify-plugin": "0.0.1",
+    "checkit": "^0.7.0",
     "choo": "^4.0.3",
     "envify": "^4.0.0",
     "envobj": "^1.0.3",

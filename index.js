@@ -1,4 +1,4 @@
-const { send, json, createError } = require('micro')
+const { send } = require('micro')
 // TODO: persist db
 const level = require('memdb')
 const webPush = require('web-push')
@@ -7,7 +7,8 @@ const bankai = require('bankai')
 const envify = require('envify')
 const envobj = require('envobj')
 const uuid = require('node-uuid')
-const url = require('url')
+const Checkit = require('checkit')
+
 const path = require('path')
 
 const env = envobj({
@@ -37,6 +38,9 @@ var worker = bankai(workerPath, {
   optimize: process.env.NODE_ENV === 'production'
 })
 
+const subscribe = require('./server/subscribe')(db)
+const notify = require('./server/notify')(db)
+
 const router = serverRouter({ default: '/' }, [
   ['/', (req, res) => client.html(req, res).pipe(res)],
   ['/bundle.js', (req, res) => client.js(req, res).pipe(res)],
@@ -44,41 +48,15 @@ const router = serverRouter({ default: '/' }, [
   ['/sw.js', (req, res) => worker.js(req, res).pipe(res)],
   ['/token', { get: makeUUID }],
   ['/:token/subscribe', { post: subscribe }],
-  ['/:token/notify', { get: notify }],
+  ['/:token/notify', { get: notify, post: notify }],
   ['/404', (req, res) => send(res, 404)]
 ])
 
 module.exports = async function (req, res) {
-  return router(req, res)
-}
-
-async function subscribe (req, res, { token }) {
-  const subscription = await json(req)
-  console.log('got subscription', subscription)
-  // TODO: validate subscription data
-  /*
-    "endpoint": "https://...",
-    "keys": {
-        "p256dh": "base64",
-        "auth": "base64"
-    }
-   */
-  await db.put(token, subscription)
-  send(res, 200)
-}
-
-async function notify (req, res, { token }) {
-  // TODO: support both GET and POST
-  // TODO: support more params than just message body
   try {
-    const subscription = await db.get(token)
-    const { query } = url.parse(req.url, true)
-    if (!query.msg) throw createError(400, '`msg` query parameter is required')
-
-    await webPush.sendNotification(subscription, query.msg)
-    send(res, 200)
+    return await router(req, res)
   } catch (err) {
-    if (err.notFound) throw createError(404, 'Nothing is subscribed to this token', err)
+    if (err instanceof Checkit.Error) return send(res, 400, err.toJSON())
     throw err
   }
 }

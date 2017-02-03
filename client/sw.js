@@ -4,8 +4,11 @@ self.addEventListener('install', (e) => {
 })
 
 self.addEventListener('push', (event) => {
-  const body = event.data.text()
-  event.waitUntil(self.registration.showNotification('nanopush', { body }))
+  const notification = event.data.json()
+  event.waitUntil(self.registration.showNotification(
+    notification.title || 'nanopush',
+    notification
+  ))
 })
 
 // TODO: figure out how to resubscribe on subscription expiration?
