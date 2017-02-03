@@ -20,6 +20,7 @@ module.exports = (state, prev, send) => {
     send('location:set', '/')
     return html`<div></div>`
   }
+  // TODO: action to reset the URL/token
   return html`
     <div class="measure">
       <section class="mv4">

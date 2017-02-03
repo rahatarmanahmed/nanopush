@@ -8,6 +8,8 @@ const envify = require('envify')
 const envobj = require('envobj')
 const uuid = require('node-uuid')
 const Checkit = require('checkit')
+const levelPromisify = require('level-promisify')
+const sublevel = require('level-sublevel')
 
 const path = require('path')
 
@@ -15,8 +17,9 @@ const env = envobj({
   SERVICE_OWNER_EMAIL: String
 })
 
-const db = require('level-promisify')(level({ valueEncoding: 'json' }))
+const db = sublevel(level({ valueEncoding: 'json' }))
 
+// TODO: Persist these to the DB, otherwise, generate them.
 const VAPID_KEYS = webPush.generateVAPIDKeys()
 webPush.setVapidDetails(
   `mailto:${env.SERVICE_OWNER_EMAIL}`,
@@ -38,8 +41,9 @@ const worker = bankai(workerPath, {
   optimize: process.env.NODE_ENV === 'production'
 })
 
-const subscribe = require('./server/subscribe')(db)
-const notify = require('./server/notify')(db)
+var subscriptionsDB = levelPromisify(db.sublevel('subscriptions'))
+const subscribe = require('./server/subscribe')(subscriptionsDB)
+const notify = require('./server/notify')(subscriptionsDB)
 
 const router = serverRouter({ default: '/' }, [
   ['/', (req, res) => client.html(req, res).pipe(res)],
