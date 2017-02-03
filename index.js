@@ -1,5 +1,4 @@
 const { send } = require('micro')
-// TODO: persist db
 const level = require('level')
 const webPush = require('web-push')
 const serverRouter = require('server-router')
@@ -20,7 +19,6 @@ const env = envobj({
 const db = sublevel(level('./.db', { valueEncoding: 'json' }))
 const keysDB = levelPromisify(db.sublevel('keys'))
 
-// TODO: Persist these to the DB, otherwise, generate them.
 keysDB.get('VAPID_KEYS')
 .catch((err) => {
   if (err.notFound) return webPush.generateVAPIDKeys()

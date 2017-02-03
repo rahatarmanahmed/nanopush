@@ -5,9 +5,14 @@ const promisifyPlugin = require('barracks-promisify-plugin')
 
 css('tachyons')
 css`
-  html, body, main {
+  html, body {
     width: 100%;
     height: 100%;
+  }
+
+  main {
+    width: 100%;
+    min-height: 100%;
   }
 `
 
@@ -28,6 +33,13 @@ const container = html`
       <p class="lh-copy measure">nanopush is a tool that sends push notifications. No installation. No registration.</p>
       <div id="root"></div>
     </div>
+    <footer class="f5 fw3 o-60">
+      <div class="vh-25"></div>
+      <ul class="list pl0">
+        <li>Created with 👌 by <a class="link fw5 dim washed-blue" href="http://rahatah.me/d">Rahat Ahmed</a></li>
+        <li><a class="link fw5 dim washed-blue" href="https://github.com/rahatarmanahmed/nanopush">Github</a></li>
+      </ul>
+    </footer>
   </main>
 `
 
