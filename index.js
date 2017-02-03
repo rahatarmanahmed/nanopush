@@ -1,6 +1,6 @@
 const { send } = require('micro')
 // TODO: persist db
-const level = require('memdb')
+const level = require('level')
 const webPush = require('web-push')
 const serverRouter = require('server-router')
 const bankai = require('bankai')
@@ -17,16 +17,29 @@ const env = envobj({
   SERVICE_OWNER_EMAIL: String
 })
 
-const db = sublevel(level({ valueEncoding: 'json' }))
+const db = sublevel(level('./.db', { valueEncoding: 'json' }))
+const keysDB = levelPromisify(db.sublevel('keys'))
 
 // TODO: Persist these to the DB, otherwise, generate them.
-const VAPID_KEYS = webPush.generateVAPIDKeys()
-webPush.setVapidDetails(
-  `mailto:${env.SERVICE_OWNER_EMAIL}`,
-  VAPID_KEYS.publicKey,
-  VAPID_KEYS.privateKey
-)
-process.env.applicationServerKey = VAPID_KEYS.publicKey
+keysDB.get('VAPID_KEYS')
+.catch((err) => {
+  if (err.notFound) return webPush.generateVAPIDKeys()
+  throw err
+})
+.then(keys => {
+  webPush.setVapidDetails(
+    `mailto:${env.SERVICE_OWNER_EMAIL}`,
+    keys.publicKey,
+    keys.privateKey
+  )
+  process.env.applicationServerKey = keys.publicKey
+
+  return keysDB.put('VAPID_KEYS', keys)
+})
+.catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
 
 const clientPath = path.join(__dirname, 'client/app.js')
 const client = bankai(clientPath, {
