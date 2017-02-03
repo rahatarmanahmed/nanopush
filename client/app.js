@@ -1,7 +1,7 @@
-var html = require('choo/html')
-var css = require('sheetify')
-var choo = require('choo')
-var promisifyPlugin = require('barracks-promisify-plugin')
+const html = require('choo/html')
+const css = require('sheetify')
+const choo = require('choo')
+const promisifyPlugin = require('barracks-promisify-plugin')
 
 css('tachyons')
 css`
@@ -11,7 +11,7 @@ css`
   }
 `
 
-var app = choo()
+const app = choo()
 app.use(promisifyPlugin())
 
 app.model(require('./init'))
@@ -21,9 +21,9 @@ app.router([
   ['/:token', require('./mainView')]
 ])
 
-var container = html`
+const container = html`
   <main class="helvetica bg-green washed-blue pa3">
-    <h1 class="f3 fw7 mt0 mb3">nanopush</h1>
+    <h1 class="f3 fw7 mt0 mb3">nanopush 📌</h1>
     <div class="f5">
       <p class="lh-copy measure">nanopush is a tool that sends push notifications. No installation. No registration.</p>
       <div id="root"></div>

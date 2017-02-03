@@ -25,16 +25,16 @@ webPush.setVapidDetails(
 )
 process.env.applicationServerKey = VAPID_KEYS.publicKey
 
-var clientPath = path.join(__dirname, 'client/app.js')
-var client = bankai(clientPath, {
+const clientPath = path.join(__dirname, 'client/app.js')
+const client = bankai(clientPath, {
   js: {
     transform: [envify]
   },
   optimize: process.env.NODE_ENV === 'production'
 })
 
-var workerPath = path.join(__dirname, 'client/sw.js')
-var worker = bankai(workerPath, {
+const workerPath = path.join(__dirname, 'client/sw.js')
+const worker = bankai(workerPath, {
   optimize: process.env.NODE_ENV === 'production'
 })
 
