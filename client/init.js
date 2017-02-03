@@ -74,7 +74,8 @@ module.exports = {
       if (serviceWorkerSupported) {
         return navigator.serviceWorker.register('/sw.js')
         .then((registration) => {
-          return registration.pushManager.getSubscription()
+          return navigator.serviceWorker.ready
+          .then(() => registration.pushManager.getSubscription())
           .then((subscription) => {
             if (subscription) {
               return subscription
@@ -91,8 +92,9 @@ module.exports = {
             send('updateSubscription', { subscription })
           ])
         })
-        .catch(() => {
-          return send('updateNotificationPermission')
+        .catch((err) => {
+          send('updateNotificationPermission')
+          throw err // TODO: handle this better?
         })
       }
     }

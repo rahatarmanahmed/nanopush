@@ -22,8 +22,6 @@ module.exports = (db) => async (req, res, { token }) => {
 
   try {
     const subscription = await db.get(token)
-    console.log(subscription)
-    console.log(notification)
     await webPush.sendNotification(subscription, JSON.stringify(notification))
 
     send(res, 200)

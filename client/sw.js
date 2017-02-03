@@ -1,11 +1,14 @@
 /* eslint-env serviceworker */
 self.addEventListener('install', (e) => {
-  self.skipWaiting()
+  e.waitUntil(self.skipWaiting())
+})
+self.addEventListener('activate', (e) => {
+  e.waitUntil(self.clients.claim())
 })
 
-self.addEventListener('push', (event) => {
-  const notification = event.data.json()
-  event.waitUntil(self.registration.showNotification(
+self.addEventListener('push', (e) => {
+  const notification = e.data.json()
+  e.waitUntil(self.registration.showNotification(
     notification.title || 'nanopush',
     notification
   ))
