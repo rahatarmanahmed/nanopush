@@ -53,6 +53,9 @@ module.exports = {
         .then(() => {
           return send('setSubscription', { token, subscription })
         })
+        .then(() => {
+          return send('location:set', `/${token}`)
+        })
       })
     }
   },
@@ -84,13 +87,12 @@ module.exports = {
         })
         .then((subscription) => {
           return Promise.all([
-            send('updateNotificationPermission', {}),
+            send('updateNotificationPermission'),
             send('updateSubscription', { subscription })
           ])
-          // TODO: go to the screen for the unique token
         })
         .catch(() => {
-          return send('updateNotificationPermission', {})
+          return send('updateNotificationPermission')
         })
       }
     }

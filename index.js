@@ -37,7 +37,7 @@ var worker = bankai(workerPath, {
   optimize: process.env.NODE_ENV === 'production'
 })
 
-const router = serverRouter({ default: '/404' }, [
+const router = serverRouter({ default: '/' }, [
   ['/', (req, res) => client.html(req, res).pipe(res)],
   ['/bundle.js', (req, res) => client.js(req, res).pipe(res)],
   ['/bundle.css', (req, res) => client.css(req, res).pipe(res)],
