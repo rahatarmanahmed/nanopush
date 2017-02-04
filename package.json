@@ -23,6 +23,7 @@
     "envify": "^4.0.0",
     "envobj": "^1.0.3",
     "level-promisify": "^2.0.1",
+    "localforage": "^1.4.3",
     "micro": "^6.2.0",
     "node-uuid": "^1.4.7",
     "server-router": "^4.0.2",

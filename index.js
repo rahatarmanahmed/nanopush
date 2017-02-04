@@ -1,3 +1,4 @@
+// TODO: add server logging
 const { send } = require('micro')
 const level = require('level')
 const webPush = require('web-push')
@@ -41,14 +42,13 @@ keysDB.get('VAPID_KEYS')
 
 const clientPath = path.join(__dirname, 'client/app.js')
 const client = bankai(clientPath, {
-  js: {
-    transform: [envify]
-  },
+  js: { transform: [envify] },
   optimize: process.env.NODE_ENV === 'production'
 })
 
 const workerPath = path.join(__dirname, 'client/sw.js')
 const worker = bankai(workerPath, {
+  js: { transform: [envify] },
   optimize: process.env.NODE_ENV === 'production'
 })
 

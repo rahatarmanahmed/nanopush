@@ -1,27 +1,17 @@
 /* eslint-env browser */
+const localforage = require('localforage')
+localforage.config({ driver: localforage.INDEXEDDB })
+
+const { urlBase64ToUint8Array } = require('./util')
+
 const serviceWorkerSupported = 'serviceWorker' in navigator
 const applicationServerKey = urlBase64ToUint8Array(process.env.applicationServerKey)
 
 const getNotificationPermission = () =>
   'Notification' in window ? window.Notification.permission : 'unsupported'
 
-function urlBase64ToUint8Array (base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4)
-  const base64 = (base64String + padding)
-  .replace(/-/g, '+')
-  .replace(/_/g, '/')
-
-  const rawData = window.atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i)
-  }
-  return outputArray
-}
-
 function getToken () {
-  return Promise.resolve(localStorage.token)
+  return localforage.getItem('token')
   .then(token => {
     if (token) return token
 
@@ -32,7 +22,7 @@ function getToken () {
 }
 
 function saveToken (token) {
-  localStorage.token = token
+  return localforage.setItem('token', token)
 }
 
 module.exports = {
@@ -44,11 +34,13 @@ module.exports = {
     updateSubscription: (state, { subscription }, send) => {
       return getToken()
       .then(function (token) {
-        saveToken(token)
+        return saveToken(token)
 
-        return fetch(`/${token}/subscribe`, {
-          method: 'POST',
-          body: JSON.stringify(subscription)
+        .then(() => {
+          return fetch(`/${token}/subscribe`, {
+            method: 'POST',
+            body: JSON.stringify(subscription)
+          })
         })
         .then(() => {
           return send('setSubscription', { token, subscription })
