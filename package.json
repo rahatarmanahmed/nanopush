@@ -8,7 +8,7 @@
   "author": "Rahat Ahmed",
   "repository": "rahatarmanahmed/nanopush",
   "scripts": {
-    "start": "micro",
+    "start": "node index.js",
     "test": "standard",
     "prepublish": "npm run test"
   },
@@ -16,6 +16,7 @@
     "standard": "^8.6.0"
   },
   "dependencies": {
+    "async-to-gen": "^1.3.2",
     "bankai": "^5.2.1",
     "barracks-promisify-plugin": "0.0.1",
     "checkit": "^0.7.0",
@@ -26,6 +27,7 @@
     "localforage": "^1.4.3",
     "micro": "^6.2.0",
     "node-uuid": "^1.4.7",
+    "pino": "^3.3.2",
     "server-router": "^4.0.2",
     "sheetify": "^6.0.1",
     "tachyons": "^4.6.1",
