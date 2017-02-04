@@ -1,7 +1,7 @@
 const html = require('choo/html')
 const css = require('sheetify')
 const choo = require('choo')
-const promisifyPlugin = require('barracks-promisify-plugin')
+const chooPromise = require('choo-promise')
 
 css('tachyons')
 css`
@@ -17,7 +17,7 @@ css`
 `
 
 const app = choo()
-app.use(promisifyPlugin())
+app.use(chooPromise())
 
 app.model(require('./init'))
 

@@ -3,7 +3,10 @@ const { send } = require('micro')
 const webPush = require('web-push')
 const serverRouter = require('server-router')
 const bankai = require('bankai')
+const babelify = require('babelify')
 const envify = require('envify')
+const yoyoify = require('yo-yoify')
+const sheetifyTransform = require('sheetify/transform')
 const envobj = require('envobj')
 const uuid = require('node-uuid')
 const Checkit = require('checkit')
@@ -52,17 +55,22 @@ module.exports = ({ db, pino }) => {
   let worker
   initKeys()
   .then(() => {
-    const clientPath = path.join(__dirname, '../client/app.js')
-    client = bankai(clientPath, {
-      js: { transform: [envify] },
+    const jsOpts = {
+      js: {
+        transform: [
+          envify,
+          sheetifyTransform,
+          yoyoify,
+          [babelify, { presets: ['latest'] }]
+        ]
+      },
       optimize: PROD
-    })
+    }
+    const clientPath = path.join(__dirname, '../client/app.js')
+    client = bankai(clientPath, jsOpts)
 
     const workerPath = path.join(__dirname, '../client/sw.js')
-    worker = bankai(workerPath, {
-      js: { transform: [envify] },
-      optimize: PROD
-    })
+    worker = bankai(workerPath, jsOpts)
   })
 
   var subscriptionsDB = levelPromisify(db.sublevel('subscriptions'))
