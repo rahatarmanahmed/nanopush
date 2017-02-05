@@ -75,6 +75,7 @@ module.exports = ({ db, pino }) => {
 
   var subscriptionsDB = levelPromisify(db.sublevel('subscriptions'))
   const subscribe = require('./subscribe')(subscriptionsDB)
+  const unsubscribe = require('./unsubscribe')(subscriptionsDB)
   const notify = require('./notify')(subscriptionsDB)
 
   const router = serverRouter({ default: '/' }, [
@@ -85,6 +86,7 @@ module.exports = ({ db, pino }) => {
 
     ['/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
     ['/:token/subscribe', { post: subscribe }],
+    ['/:token/unsubscribe', { get: unsubscribe }],
     ['/:token/notify', { get: notify, post: notify }],
 
     ['/404', (req, res) => send(res, 404)]

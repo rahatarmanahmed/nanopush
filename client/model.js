@@ -10,19 +10,28 @@ const applicationServerKey = urlBase64ToUint8Array(process.env.applicationServer
 const getNotificationPermission = () =>
   'Notification' in window ? window.Notification.permission : 'unsupported'
 
+function fetchNewToken () {
+  return fetch('/token')
+  .then((result) => result.json())
+  .then(({ token }) => token)
+}
+
 function getToken () {
   return localforage.getItem('token')
   .then(token => {
     if (token) return token
 
-    return fetch('/token')
-    .then((result) => result.json())
-    .then(({ token }) => token)
+    return fetchNewToken()
   })
 }
 
 function saveToken (token) {
   return localforage.setItem('token', token)
+}
+
+function unsubscribeToken(token) {
+  return fetch(`/${token}/unsubscribe`)
+  .then(() => localforage.removeItem('token'))
 }
 
 module.exports = {
@@ -49,6 +58,14 @@ module.exports = {
           return send('location:set', `/${token}`)
         })
       })
+    },
+
+    resetToken: (state, data, send) => {
+      if (!state.token) throw new Error('Cannot unsubscribe unless the state has a subscribed token')
+      return unsubscribeToken(state.token)
+      .then(() => send('updateSubscription', {
+        subscription: state.subscription
+      }))
     }
   },
   reducers: {

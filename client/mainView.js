@@ -20,7 +20,14 @@ module.exports = (state, prev, send) => {
     send('location:set', '/')
     return html`<div></div>`
   }
-  // TODO: action to reset the URL/token
+
+  function resetToken (e) {
+    e.preventDefault()
+    if (window.confirm(`Are you sure you want to reset your token? This is permanent and can't be undone.`)) {
+      send('resetToken')
+    }
+  }
+
   return html`
     <div class="measure">
       <section class="mv4">
@@ -32,7 +39,7 @@ module.exports = (state, prev, send) => {
         </div>
 
         <p class="lh-copy">
-          You can receive notifications when you send a request to that URL, even when this page isn't open. This URL will stay the same (even if you refresh) until you clear your browser data.
+          You can receive notifications when you send a request to that URL, even when this page isn't open. This URL will stay the same (even if you refresh) until you clear your browser data. If you want a new token, <a class="link underline hover-light-blue pointer" onclick=${resetToken}>click here</a>.
         </p>
       </section>
 
@@ -43,7 +50,7 @@ module.exports = (state, prev, send) => {
           Try it out! Run this command to see if it works
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue">
-          curl 'http://localhost:3000/01365a23-26cd-4846-a75b-24d930d5c802/notify?title=nanopush&body=This%20is%20a%20test'
+          curl 'http://localhost:3000/${state.token}/notify?title=nanopush&body=This%20is%20a%20test'
         </div>
       </section>
 
