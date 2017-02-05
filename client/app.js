@@ -19,7 +19,7 @@ css`
 const app = choo()
 app.use(chooPromise())
 
-app.model(require('./init'))
+app.model(require('./model'))
 
 app.router([
   ['/', require('./initView')],

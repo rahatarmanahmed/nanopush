@@ -32,7 +32,7 @@ module.exports = (state, prev, send) => {
         </div>
 
         <p class="lh-copy">
-          You can receive notifications when you send a request to that URL, even when this page isn't open.
+          You can receive notifications when you send a request to that URL, even when this page isn't open. This URL will stay the same (even if you refresh) until you clear your browser data.
         </p>
       </section>
 
