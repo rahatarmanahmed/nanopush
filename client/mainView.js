@@ -42,7 +42,7 @@ module.exports = (state, prev, send) => {
         <p class="lh-copy">
           Try it out! Run this command to see if it works
         </p>
-        <div class="code pa2 br2 bg-dark-green light-blue overflow-y-scroll nowrap">
+        <div class="code pa2 br2 bg-dark-green light-blue">
           curl 'http://localhost:3000/01365a23-26cd-4846-a75b-24d930d5c802/notify?title=nanopush&body=This%20is%20a%20test'
         </div>
       </section>
