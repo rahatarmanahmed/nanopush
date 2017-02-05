@@ -43,19 +43,45 @@ module.exports = (state, prev, send) => {
           Try it out! Run this command to see if it works
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue overflow-y-scroll nowrap">
-          TODO: put a curl command here
+          curl 'http://localhost:3000/01365a23-26cd-4846-a75b-24d930d5c802/notify?title=nanopush&body=This%20is%20a%20test'
         </div>
       </section>
 
       ${Divider(true)}
 
       <section class="mv4">
-        <h2 class="f4 fw7 lh-title">
+        <h2 class="f4 fw7 mb2 lh-title">
           API
         </h2>
-        <p class="lh-copy">
-          TODO: api docs
+
+        <h3 class="code f5 fw7 mt0 mb1 lh-copy">
+          GET /${state.token}/notify
+        </h3>
+        <p class="ml2 mv1">
+          Takes parameters by query string.
         </p>
+
+        <h3 class="code f5 fw7 mt2 mb1 lh-copy">
+          POST /${state.token}/notify
+        </h3>
+        <p class="ml2 mv1">
+          Takes parameters by JSON body.
+        </p>
+
+        <h4 class="f5 fw7 mt3 mb1">
+          Parameters
+        </h4>
+        <ul class="list mv1">
+          <li>
+            <span class="code">title</span>: The title text of the notification.
+          </li>
+          <li>
+            <span class="code">body</span>: The body text of the notification.
+          </li>
+          <li>
+            <span class="code">icon</span>: A URL to an icon for the notification.
+          </li>
+        </ul>
       </section>
     </div>
   `
