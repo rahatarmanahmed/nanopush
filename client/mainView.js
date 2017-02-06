@@ -1,5 +1,6 @@
 const html = require('choo/html')
 const css = require('sheetify')
+const window = require('global/window')
 
 const horizontalFlip = css`
   :host {

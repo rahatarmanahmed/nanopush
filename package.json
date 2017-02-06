@@ -35,6 +35,7 @@
     "cross-env": "^3.1.4",
     "envify": "^4.0.0",
     "envobj": "^1.0.3",
+    "global": "^4.3.1",
     "is-uuid": "^1.0.2",
     "level": "^1.5.0",
     "level-promisify": "^2.0.1",
