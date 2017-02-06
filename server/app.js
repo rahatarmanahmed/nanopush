@@ -13,13 +13,13 @@ const Checkit = require('checkit')
 const path = require('path')
 const sublevel = require('level-sublevel')
 const levelPromisify = require('level-promisify')
-const PROD = process.env.NODE_ENV === 'production'
+const DEV = process.env.NODE_ENV === 'development'
 
 const env = envobj({
   SERVICE_OWNER_EMAIL: String
 })
 
-module.exports = ({ db, pino }) => {
+module.exports = async ({ db, pino }) => {
   db = sublevel(db)
   const keysDB = levelPromisify(db.sublevel('keys'))
 
@@ -51,27 +51,26 @@ module.exports = ({ db, pino }) => {
     process.env.applicationServerKey = keys.publicKey
   }
 
-  let client
-  let worker
-  initKeys()
-  .then(() => {
-    const jsOpts = {
-      js: {
-        transform: [
-          envify,
-          sheetifyTransform,
-          yoyoify,
-          [babelify, { presets: ['latest'] }]
-        ]
-      },
-      optimize: PROD
-    }
-    const clientPath = path.join(__dirname, '../client/app.js')
-    client = bankai(clientPath, jsOpts)
+  await initKeys()
 
-    const workerPath = path.join(__dirname, '../client/sw.js')
-    worker = bankai(workerPath, jsOpts)
-  })
+  const jsOpts = {
+    js: {
+      // go thru a shitshow of transforms to appease the uglifyify gods
+      transform: DEV ? [envify] : [
+        envify,
+        sheetifyTransform,
+        yoyoify,
+        [babelify, { presets: ['latest'] }]
+      ],
+      debug: DEV
+    },
+    optimize: !DEV
+  }
+  const clientPath = path.join(__dirname, '../client/app.js')
+  const client = bankai(clientPath, jsOpts)
+
+  const workerPath = path.join(__dirname, '../client/sw.js')
+  const worker = bankai(workerPath, jsOpts)
 
   var subscriptionsDB = levelPromisify(db.sublevel('subscriptions'))
   const subscribe = require('./subscribe')(subscriptionsDB)
@@ -86,18 +85,16 @@ module.exports = ({ db, pino }) => {
 
     ['/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
     ['/:token/subscribe', { post: subscribe }],
-    ['/:token/unsubscribe', { get: unsubscribe }],
-    ['/:token/notify', { get: notify, post: notify }],
-
-    ['/404', (req, res) => send(res, 404)]
+    ['/:token/unsubscribe', unsubscribe],
+    ['/:token/notify', { get: notify, post: notify }]
   ])
 
   async function sendError (req, res, err) {
     const { statusCode, message, stack } = err
     if (statusCode) {
-      send(res, statusCode, PROD ? message : stack)
+      send(res, statusCode, DEV ? stack : message)
     } else {
-      send(res, 500, PROD ? 'Internal Server Error' : stack)
+      send(res, 500, DEV ? stack : 'Internal Server Error')
     }
   }
 

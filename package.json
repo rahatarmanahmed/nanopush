@@ -8,12 +8,19 @@
   "author": "Rahat Ahmed",
   "repository": "rahatarmanahmed/nanopush",
   "scripts": {
-    "start": "node index.js",
-    "test": "standard",
+    "start": "cross-env NODE_ENV=development node index.js",
+    "start-prod": "cross-env NODE_ENV=production node index.js",
+    "lint": "standard",
+    "pretest": "npm run lint",
+    "test": "ava",
     "prepublish": "npm run test"
   },
   "devDependencies": {
-    "standard": "^8.6.0"
+    "ava": "^0.18.1",
+    "memdb": "^1.3.1",
+    "standard": "^8.6.0",
+    "supertest": "^3.0.0",
+    "xtend": "^4.0.1"
   },
   "dependencies": {
     "async-to-gen": "^1.3.2",
@@ -23,8 +30,10 @@
     "checkit": "^0.7.0",
     "choo": "^4.0.3",
     "choo-promise": "^1.0.0",
+    "cross-env": "^3.1.4",
     "envify": "^4.0.0",
     "envobj": "^1.0.3",
+    "is-uuid": "^1.0.2",
     "level": "^1.5.0",
     "level-promisify": "^2.0.1",
     "level-sublevel": "^6.6.1",

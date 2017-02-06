@@ -29,7 +29,7 @@ function saveToken (token) {
   return localforage.setItem('token', token)
 }
 
-function unsubscribeToken(token) {
+function unsubscribeToken (token) {
   return fetch(`/${token}/unsubscribe`)
   .then(() => localforage.removeItem('token'))
 }

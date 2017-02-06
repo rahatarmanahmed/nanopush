@@ -2,6 +2,7 @@ const { send, json, createError } = require('micro')
 const Checkit = require('checkit')
 const webPush = require('web-push')
 const url = require('url')
+const isUUID = require('is-uuid')
 
 const validator = new Checkit({
   title: ['string'],
@@ -13,10 +14,12 @@ const validator = new Checkit({
 }, (input) => input.title == null)
 
 module.exports = (db) => async (req, res, { token }) => {
+  if (!isUUID.v4(token)) throw createError(400, 'Token must be a valid UUID')
+
   let notification
   if (req.method === 'POST') notification = await json(req)
   else if (req.method === 'GET') notification = url.parse(req.url, true).query
-  else throw createError(404)
+  else throw createError(405, 'Method not found')
 
   await validator.run(notification)
 
@@ -24,7 +27,7 @@ module.exports = (db) => async (req, res, { token }) => {
     const subscription = await db.get(token)
     await webPush.sendNotification(subscription, JSON.stringify(notification))
 
-    send(res, 200)
+    send(res, 204)
   } catch (err) {
     if (err.notFound) throw createError(404, 'Nothing is subscribed to this token', err)
     throw err
