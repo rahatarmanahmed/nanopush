@@ -6,14 +6,14 @@ A tiny push notification app.
 nanopush requires at least node `v6`.
 
 ```sh
+npm install
 cp .env .env.local
 node generateKeys.js >> .env.local
 ```
 
-Edit `.env.local` and fill in your email for `SERVICE_OWNER_EMAIL`.
+Edit `.env.local` and fill in your email for `SERVICE_OWNER_EMAIL`. Then to start the app, run:
 
 ```sh
-npm install
 npm start
 ```
 
