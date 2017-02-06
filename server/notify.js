@@ -7,11 +7,11 @@ const isUUID = require('is-uuid')
 const validator = new Checkit({
   title: ['string'],
   body: ['string'],
-  icon: ['string', 'url']
+  icon: ['string', { rule: 'url', message: 'The icon must be a valid URL' }]
 })
 .maybe({
-  body: ['required']
-}, (input) => input.title == null)
+  title: ['required']
+}, (input) => input.body == null)
 
 module.exports = (db) => async (req, res, { token }) => {
   if (!isUUID.v4(token)) throw createError(400, 'Token must be a valid UUID')
@@ -19,7 +19,6 @@ module.exports = (db) => async (req, res, { token }) => {
   let notification
   if (req.method === 'POST') notification = await json(req)
   else if (req.method === 'GET') notification = url.parse(req.url, true).query
-  else throw createError(405, 'Method not found')
 
   await validator.run(notification)
 

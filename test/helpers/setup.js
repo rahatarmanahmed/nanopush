@@ -4,8 +4,8 @@ const memdb = require('memdb')
 const sublevel = require('level-sublevel')
 const pino = require('pino')
 
-module.exports = async () => {
-  const db = sublevel(memdb({ valueEncoding: 'json' }))
+module.exports = async ({ db } = {}) => {
+  if (!db) db = sublevel(memdb({ valueEncoding: 'json' }))
   const quietPino = pino({ enabled: false })
   const app = await require('../../server/app')({ db, pino: quietPino })
   return {
