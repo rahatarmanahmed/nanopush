@@ -2,6 +2,9 @@
 A tiny push notification app.
 
 ## Setup
+
+nanopush requires at least node `v6`.
+
 First copy .env to .env.local, and edit it to include your email. Then run:
 
 ```sh
