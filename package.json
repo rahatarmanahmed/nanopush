@@ -1,7 +1,7 @@
 {
   "name": "nanopush",
   "private": true,
-  "description": "A terrible push notification service",
+  "description": "A tiny push notification service",
   "version": "0.0.0",
   "license": "MIT",
   "main": "index.js",
@@ -12,8 +12,7 @@
     "start-prod": "cross-env NODE_ENV=production node index.js",
     "lint": "standard",
     "pretest": "npm run lint",
-    "test": "nyc ava",
-    "prepublish": "npm run test"
+    "test": "nyc ava"
   },
   "devDependencies": {
     "ava": "^0.18.1",
