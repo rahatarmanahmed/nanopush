@@ -16,7 +16,7 @@ test.afterEach.always(t => {
 })
 
 test.serial('GET /:token/notify sends notification', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -36,7 +36,7 @@ test.serial('GET /:token/notify sends notification', async t => {
 })
 
 test.serial('POST /:token/notify sends notification', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -59,7 +59,7 @@ test.serial('POST /:token/notify sends notification', async t => {
 })
 
 test.serial('GET /:token/notify returns 404 for not yet subscribed token', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .get(`/${uuid.v4()}/notify?title=test`)
@@ -68,7 +68,7 @@ test.serial('GET /:token/notify returns 404 for not yet subscribed token', async
 })
 
 test.serial('GET /:token/notify returns 400 for invalid token', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .get('/💩/notify?title=test')
@@ -77,7 +77,7 @@ test.serial('GET /:token/notify returns 400 for invalid token', async t => {
 })
 
 test.serial('GET /:token/notify requires at least title or body', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -101,7 +101,7 @@ test.serial('GET /:token/notify requires at least title or body', async t => {
 })
 
 test.serial('GET /:token/notify validates icon is a url', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   let res = await request(app)
   .get(`/${TOKEN}/notify?title=test&icon=not_a_url`)

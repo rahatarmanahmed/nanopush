@@ -7,7 +7,7 @@ const setup = require('../helpers/setup')
 const { TOKEN, SUBSCRIPTION } = require('../helpers/testData')
 
 test('/:token/subscribe saves subscription for a token', async t => {
-  const { app, db } = await setup()
+  const { app, db } = setup()
 
   await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -21,7 +21,7 @@ test('/:token/subscribe saves subscription for a token', async t => {
 })
 
 test('/:token/subscribe sends 400 for missing data', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   let res = await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -36,7 +36,7 @@ test('/:token/subscribe sends 400 for missing data', async t => {
 })
 
 test('/:token/subscribe sends 400 for bad endpoint', async t => {
-  const { app } = await setup()
+  const { app } = setup()
   let res = await request(app)
   .post(`/${TOKEN}/subscribe`)
   .send(xtend(SUBSCRIPTION, {
@@ -50,7 +50,7 @@ test('/:token/subscribe sends 400 for bad endpoint', async t => {
 })
 
 test('/:token/subscribe sends 400 for non url safe base64 keys', async t => {
-  const { app } = await setup()
+  const { app } = setup()
   let res = await request(app)
   .post(`/${TOKEN}/subscribe`)
   .send(xtend(SUBSCRIPTION, {
@@ -68,7 +68,7 @@ test('/:token/subscribe sends 400 for non url safe base64 keys', async t => {
 })
 
 test('/:token/subscribe fails for non-uuid tokens', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   const res = await request(app)
   .post(`/💩/subscribe`)

@@ -5,7 +5,7 @@ const isUUID = require('is-uuid')
 const setup = require('../helpers/setup')
 
 test('/token endpoint returns UUID v4', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   const res = await request(app)
   .get('/token')
@@ -17,7 +17,7 @@ test('/token endpoint returns UUID v4', async t => {
 })
 
 test(`/token returns different tokens every call`, async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   const response1 = await request(app)
   .get('/token')

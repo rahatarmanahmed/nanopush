@@ -5,7 +5,7 @@ const setup = require('../helpers/setup')
 const { TOKEN, SUBSCRIPTION } = require('../helpers/testData')
 
 test('/:token/unsubscribe fails for tokens that werent subscribed', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   const res = await request(app)
   .get(`/${TOKEN}/unsubscribe`)
@@ -15,7 +15,7 @@ test('/:token/unsubscribe fails for tokens that werent subscribed', async t => {
 })
 
 test('/:token/unsubscribe successfully unsubscribes a token', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   await request(app)
   .post(`/${TOKEN}/subscribe`)
@@ -38,7 +38,7 @@ test('/:token/unsubscribe successfully unsubscribes a token', async t => {
 })
 
 test('/:token/unsubscribe fails for non-uuid tokens', async t => {
-  const { app } = await setup()
+  const { app } = setup()
 
   const res = await request(app)
   .get(`/💩/unsubscribe`)

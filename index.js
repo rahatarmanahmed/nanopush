@@ -6,13 +6,11 @@ const pino = require('pino')()
 const db = level('./.db', { valueEncoding: 'json' })
 const port = process.env.PORT || 3000
 
-require('./server/app')({ db, pino })
-.then((app) => {
-  const server = micro(app)
+try {
+  const server = micro(require('./server/app')({ db, pino }))
   server.listen(port)
   pino.info(`Server started on port ${port}`)
-})
-.catch((err) => {
+} catch (err) {
   pino.error(err, 'Failed to start server')
   process.exit(1)
-})
+}

@@ -16,42 +16,20 @@ const levelPromisify = require('level-promisify')
 const DEV = process.env.NODE_ENV === 'development'
 
 const env = envobj({
-  SERVICE_OWNER_EMAIL: String
+  SERVICE_OWNER_EMAIL: String,
+  VAPID_PUBLIC_KEY: String,
+  VAPID_PRIVATE_KEY: String
 })
 
-module.exports = async ({ db, pino }) => {
+module.exports = ({ db, pino }) => {
   db = sublevel(db)
-  const keysDB = levelPromisify(db.sublevel('keys'))
 
-  async function getKeys () {
-    try {
-      const keys = await keysDB.get('VAPID_KEYS')
-      pino.info('Loaded VAPID keys from db')
-      return keys
-    } catch (err) {
-      if (err.notFound) {
-        pino.info('VAPID keys not found, generating new keys')
-        const keys = webPush.generateVAPIDKeys()
-        await keysDB.put('VAPID_KEYS', keys)
-        return keys
-      }
-
-      pino.error(err, 'Failed to initialize VAPID keys')
-      throw err
-    }
-  }
-
-  async function initKeys () {
-    const keys = await getKeys()
-    webPush.setVapidDetails(
-      `mailto:${env.SERVICE_OWNER_EMAIL}`,
-      keys.publicKey,
-      keys.privateKey
-    )
-    process.env.applicationServerKey = keys.publicKey
-  }
-
-  await initKeys()
+  webPush.setVapidDetails(
+    `mailto:${env.SERVICE_OWNER_EMAIL}`,
+    env.VAPID_PUBLIC_KEY,
+    env.VAPID_PRIVATE_KEY
+  )
+  process.env.applicationServerKey = env.VAPID_PUBLIC_KEY
 
   const jsOpts = {
     js: {
