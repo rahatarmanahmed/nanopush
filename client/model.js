@@ -11,7 +11,7 @@ const getNotificationPermission = () =>
   'Notification' in window ? window.Notification.permission : 'unsupported'
 
 function fetchNewToken () {
-  return fetch('/token')
+  return fetch('/h/token')
   .then((result) => result.json())
   .then(({ token }) => token)
 }
@@ -30,7 +30,7 @@ function saveToken (token) {
 }
 
 function unsubscribeToken (token) {
-  return fetch(`/${token}/unsubscribe`)
+  return fetch(`/h/${token}/unsubscribe`)
   .then(() => localforage.removeItem('token'))
 }
 
@@ -46,7 +46,7 @@ module.exports = {
         return saveToken(token)
 
         .then(() => {
-          return fetch(`/${token}/subscribe`, {
+          return fetch(`/h/${token}/subscribe`, {
             method: 'POST',
             body: JSON.stringify(subscription)
           })

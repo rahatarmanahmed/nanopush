@@ -65,10 +65,10 @@ module.exports = ({ db, pino }) => {
     ['/h/bundle.css', (req, res) => client.css(req, res).pipe(res)],
     ['/h/sw.js', (req, res) => worker.js(req, res).pipe(res)],
 
-    ['/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
-    ['/:token/subscribe', { post: subscribe }],
-    ['/:token/unsubscribe', unsubscribe],
-    ['/:token/notify', { get: notify, post: notify }]
+    ['/h/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
+    ['/h/:token/subscribe', { post: subscribe }],
+    ['/h/:token/unsubscribe', unsubscribe],
+    ['/h/:token/notify', { get: notify, post: notify }]
   ])
 
   function ensureTrailingSlash (handler) {

@@ -36,7 +36,7 @@ self.addEventListener('pushsubscriptionchange', (e) => {
         applicationServerKey
       })
       .then((subscription) => {
-        return fetch(`/${token}/subscribe`, {
+        return fetch(`/h/${token}/subscribe`, {
           method: 'POST',
           body: JSON.stringify(subscription)
         })
