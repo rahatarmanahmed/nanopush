@@ -63,14 +63,14 @@ module.exports = (state, prev, send) => {
         </h2>
 
         <h3 class="code f5 fw7 mt0 mb1 lh-copy">
-          GET /${state.token}/notify
+          GET /h/${state.token}/notify
         </h3>
         <p class="ml2 mv1">
           Takes parameters by query string.
         </p>
 
         <h3 class="code f5 fw7 mt2 mb1 lh-copy">
-          POST /${state.token}/notify
+          POST /h/${state.token}/notify
         </h3>
         <p class="ml2 mv1">
           Takes parameters by JSON body.
