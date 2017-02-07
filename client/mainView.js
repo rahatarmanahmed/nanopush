@@ -18,7 +18,7 @@ const Divider = (flip) => {
 
 module.exports = (state, prev, send) => {
   if (!state.token) {
-    send('location:set', '/')
+    send('location:set', '/h/')
     return html`<div></div>`
   }
 

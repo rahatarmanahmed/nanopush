@@ -21,9 +21,9 @@ app.use(chooPromise())
 
 app.model(require('./model'))
 
-app.router([
-  ['/', require('./initView')],
-  ['/:token', require('./mainView')]
+app.router({ default: '/h/' }, [
+  ['/h/', require('./initView')],
+  ['/h/:token', require('./mainView')]
 ])
 
 const container = html`

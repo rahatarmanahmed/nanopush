@@ -55,7 +55,7 @@ module.exports = {
           return send('setSubscription', { token, subscription })
         })
         .then(() => {
-          return send('location:set', `/${token}`)
+          return send('location:set', `/h/${token}`)
         })
       })
     },
@@ -81,7 +81,7 @@ module.exports = {
   subscriptions: {
     serviceWorker: (send) => {
       if (serviceWorkerSupported) {
-        return navigator.serviceWorker.register('/sw.js')
+        return navigator.serviceWorker.register('/h/sw.js')
         .then((registration) => {
           return navigator.serviceWorker.ready
           .then(() => registration.pushManager.getSubscription())

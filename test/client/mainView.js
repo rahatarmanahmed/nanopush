@@ -17,7 +17,7 @@ test.after(() => {
 test('mainView redirects to / if token not set', t => {
   const html = mainView({}, null, (action, data) => {
     t.is(action, 'location:set')
-    t.is(data, '/')
+    t.is(data, '/h/')
   })
 
   t.snapshot(html.toString())
