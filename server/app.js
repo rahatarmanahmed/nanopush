@@ -31,7 +31,10 @@ module.exports = ({ db, pino }) => {
   )
   process.env.applicationServerKey = env.VAPID_PUBLIC_KEY
 
-  const jsOpts = {
+  const bankaiOpts = {
+    html: {
+      title: 'nanopush'
+    },
     js: {
       // go thru a shitshow of transforms to appease the uglifyify gods
       transform: DEV ? [envify] : [
@@ -45,10 +48,10 @@ module.exports = ({ db, pino }) => {
     optimize: !DEV
   }
   const clientPath = path.join(__dirname, '../client/app.js')
-  const client = bankai(clientPath, jsOpts)
+  const client = bankai(clientPath, bankaiOpts)
 
   const workerPath = path.join(__dirname, '../client/sw.js')
-  const worker = bankai(workerPath, jsOpts)
+  const worker = bankai(workerPath, bankaiOpts)
 
   var subscriptionsDB = levelPromisify(db.sublevel('subscriptions'))
   const subscribe = require('./subscribe')(subscriptionsDB)
