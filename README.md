@@ -25,17 +25,20 @@ npm test
 
 ## Deployment
 
-This needs to be deployed and proxied on https, or else the push API won't work.
+This needs to be deployed and proxied on https, or else the push API won't work. I suggest Caddy or nginx.
 
-*TODO: instructions on setting up nginx or whatever*
-
-Once you have all that set up, you can start the app in production mode with
+Once you have all that set up, you can start the app in production mode like so
 
 ```sh
 # Set these environment variables how you like
-export VAPID_PUBLIC_KEY={the public key you generated earlier}
-export VAPID_PRIVATE_KEY={the private key you generated earlier}
+export VAPID_PUBLIC_KEY={the public key you generated earlier in .env.local}
+export VAPID_PRIVATE_KEY={the private key you generated earlier in .env.local}
 export SERVICE_OWNER_EMAIL={your email}
 
-npm run start-prod
+export HOST=0.0.0.0 # Default: 127.0.0.1
+export PORT=8080 # Default: 3000
+
+node index.js
 ```
+
+I use a [`pm2` config](http://pm2.keymetrics.io/docs/usage/application-declaration/) to keep the app always running.
