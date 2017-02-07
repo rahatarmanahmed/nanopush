@@ -36,7 +36,7 @@ module.exports = (state, prev, send) => {
           Your push notification URL is:
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue overflow-y-scroll nowrap">
-          ${window.location.origin}/${state.token}/notify
+          ${window.location.origin}/h/${state.token}/notify
         </div>
 
         <p class="lh-copy">
@@ -51,7 +51,7 @@ module.exports = (state, prev, send) => {
           Try it out! Run this command to see if it works
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue">
-          curl '${window.location.origin}/${state.token}/notify?title=nanopush&body=This%20is%20a%20test'
+          curl '${window.location.origin}/h/${state.token}/notify?title=nanopush&body=This%20is%20a%20test'
         </div>
       </section>
 
