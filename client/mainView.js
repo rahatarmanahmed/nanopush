@@ -1,4 +1,4 @@
-const html = require('choo/html')
+const yo = require('yo-yo')
 const css = require('sheetify')
 const window = require('global/window')
 
@@ -11,17 +11,12 @@ const horizontalFlip = css`
 const Divider = (flip) => {
   var classes = 'nowrap overflow-hidden tc'
   if (flip) classes += ' ' + horizontalFlip
-  return html`
+  return yo`
     <div class=${classes}>📌📌📌📌📌</div>
   `
 }
 
-module.exports = (state, prev, send) => {
-  if (!state.token) {
-    send('location:set', '/h/')
-    return html`<div></div>`
-  }
-
+module.exports = (state, send) => {
   function resetToken (e) {
     e.preventDefault()
     if (window.confirm(`Are you sure you want to reset your token? This is permanent and can't be undone.`)) {
@@ -29,14 +24,14 @@ module.exports = (state, prev, send) => {
     }
   }
 
-  return html`
+  return yo`
     <div class="measure">
       <section class="mv4">
         <p class="lh-copy">
           Your push notification URL is:
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue overflow-y-scroll nowrap">
-          ${window.location.origin}/h/${state.token}/notify
+          ${window.location.href}${state.token}/notify
         </div>
 
         <p class="lh-copy">
@@ -51,7 +46,7 @@ module.exports = (state, prev, send) => {
           Try it out! Run this command to see if it works
         </p>
         <div class="code pa2 br2 bg-dark-green light-blue">
-          curl '${window.location.origin}/h/${state.token}/notify?title=nanopush&body=This%20is%20a%20test'
+          curl '${window.location.href}${state.token}/notify?title=nanopush&body=This%20is%20a%20test'
         </div>
       </section>
 
@@ -63,14 +58,14 @@ module.exports = (state, prev, send) => {
         </h2>
 
         <h3 class="code f5 fw7 mt0 mb1 lh-copy">
-          GET /h/${state.token}/notify
+          GET ${window.location.href}${state.token}/notify
         </h3>
         <p class="ml2 mv1">
           Takes parameters by query string.
         </p>
 
         <h3 class="code f5 fw7 mt2 mb1 lh-copy">
-          POST /h/${state.token}/notify
+          POST ${window.location.href}${state.token}/notify
         </h3>
         <p class="ml2 mv1">
           Takes parameters by JSON body.

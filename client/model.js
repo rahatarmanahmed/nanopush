@@ -11,7 +11,7 @@ const getNotificationPermission = () =>
   'Notification' in window ? window.Notification.permission : 'unsupported'
 
 function fetchNewToken () {
-  return fetch('/h/token')
+  return fetch('token')
   .then((result) => result.json())
   .then(({ token }) => token)
 }
@@ -30,7 +30,7 @@ function saveToken (token) {
 }
 
 function unsubscribeToken (token) {
-  return fetch(`/h/${token}/unsubscribe`)
+  return fetch(`${token}/unsubscribe`)
   .then(() => localforage.removeItem('token'))
 }
 
@@ -46,16 +46,13 @@ module.exports = {
         return saveToken(token)
 
         .then(() => {
-          return fetch(`/h/${token}/subscribe`, {
+          return fetch(`${token}/subscribe`, {
             method: 'POST',
             body: JSON.stringify(subscription)
           })
         })
         .then(() => {
           return send('setSubscription', { token, subscription })
-        })
-        .then(() => {
-          return send('location:set', `/h/${token}`)
         })
       })
     },
@@ -81,7 +78,7 @@ module.exports = {
   subscriptions: {
     serviceWorker: (send) => {
       if (serviceWorkerSupported) {
-        return navigator.serviceWorker.register('/h/sw.js')
+        return navigator.serviceWorker.register('sw.js')
         .then((registration) => {
           return navigator.serviceWorker.ready
           .then(() => registration.pushManager.getSubscription())

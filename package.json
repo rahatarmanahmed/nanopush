@@ -28,6 +28,7 @@
     "babel-preset-latest": "^6.22.0",
     "babelify": "^7.3.0",
     "bankai": "^5.2.1",
+    "barracks": "^9.3.0",
     "checkit": "^0.7.0",
     "choo": "^4.0.3",
     "choo-promise": "^1.0.0",
@@ -46,6 +47,7 @@
     "server-router": "^4.0.2",
     "sheetify": "^6.0.1",
     "tachyons": "^4.6.1",
-    "web-push": "^3.2.1"
+    "web-push": "^3.2.1",
+    "yo-yo": "^1.4.0"
   }
 }

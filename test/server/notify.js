@@ -19,12 +19,12 @@ test.serial('GET /:token/notify sends notification', async t => {
   const { app } = setup()
 
   await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(SUBSCRIPTION)
   .expect(204)
 
   await request(app)
-  .get(`/h/${TOKEN}/notify?title=test&body=whats%20up&icon=https%3A%2F%2Fstatic.minichan.org%2Fimg%2F1419560019791980.jpg`)
+  .get(`/${TOKEN}/notify?title=test&body=whats%20up&icon=https%3A%2F%2Fstatic.minichan.org%2Fimg%2F1419560019791980.jpg`)
   .expect(204)
   t.true(webPush.sendNotification.called)
   t.deepEqual(webPush.sendNotification.args[0][0], SUBSCRIPTION)
@@ -39,7 +39,7 @@ test.serial('POST /:token/notify sends notification', async t => {
   const { app } = setup()
 
   await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(SUBSCRIPTION)
   .expect(204)
 
@@ -50,7 +50,7 @@ test.serial('POST /:token/notify sends notification', async t => {
   }
 
   await request(app)
-  .post(`/h/${TOKEN}/notify`)
+  .post(`/${TOKEN}/notify`)
   .send(notification)
   .expect(204)
   t.true(webPush.sendNotification.called)
@@ -62,7 +62,7 @@ test.serial('GET /:token/notify returns 404 for not yet subscribed token', async
   const { app } = setup()
 
   await request(app)
-  .get(`/h/${uuid.v4()}/notify?title=test`)
+  .get(`/${uuid.v4()}/notify?title=test`)
   .expect(404)
   t.false(webPush.sendNotification.called)
 })
@@ -71,7 +71,7 @@ test.serial('GET /:token/notify returns 400 for invalid token', async t => {
   const { app } = setup()
 
   await request(app)
-  .get('/h/💩/notify?title=test')
+  .get('/💩/notify?title=test')
   .expect(400)
   t.false(webPush.sendNotification.called)
 })
@@ -80,12 +80,12 @@ test.serial('GET /:token/notify requires at least title or body', async t => {
   const { app } = setup()
 
   await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(SUBSCRIPTION)
   .expect(204)
 
   const res = await request(app)
-  .get(`/h/${TOKEN}/notify`)
+  .get(`/${TOKEN}/notify`)
   .expect(400)
 
   t.deepEqual(res.body, {
@@ -94,7 +94,7 @@ test.serial('GET /:token/notify requires at least title or body', async t => {
   t.false(webPush.sendNotification.called)
 
   await request(app)
-  .get(`/h/${TOKEN}/notify?body=test`)
+  .get(`/${TOKEN}/notify?body=test`)
   .expect(204)
 
   t.true(webPush.sendNotification.called)
@@ -104,7 +104,7 @@ test.serial('GET /:token/notify validates icon is a url', async t => {
   const { app } = setup()
 
   let res = await request(app)
-  .get(`/h/${TOKEN}/notify?title=test&icon=not_a_url`)
+  .get(`/${TOKEN}/notify?title=test&icon=not_a_url`)
   .expect(400)
 
   t.deepEqual(res.body, {

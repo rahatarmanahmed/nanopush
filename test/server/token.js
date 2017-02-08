@@ -8,7 +8,7 @@ test('/token endpoint returns UUID v4', async t => {
   const { app } = setup()
 
   const res = await request(app)
-  .get('/h/token')
+  .get('/token')
   .expect('Content-Type', /json/)
   .expect(200)
 
@@ -20,9 +20,9 @@ test(`/token returns different tokens every call`, async t => {
   const { app } = setup()
 
   const response1 = await request(app)
-  .get('/h/token')
+  .get('/token')
   const response2 = await request(app)
-  .get('/h/token')
+  .get('/token')
 
   const token1 = response1.body.token
   const token2 = response2.body.token

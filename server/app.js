@@ -58,30 +58,18 @@ module.exports = ({ db, pino }) => {
   const unsubscribe = require('./unsubscribe')(subscriptionsDB)
   const notify = require('./notify')(subscriptionsDB)
 
-  const router = serverRouter({ default: '/h/' }, [
-    ['/', (req, res) => redirect(req, res, '/h/')],
-    ['/h/', ensureTrailingSlash((req, res) => client.html(req, res).pipe(res))],
-    ['/h/bundle.js', (req, res) => client.js(req, res).pipe(res)],
-    ['/h/bundle.css', (req, res) => client.css(req, res).pipe(res)],
-    ['/h/sw.js', (req, res) => worker.js(req, res).pipe(res)],
+  const router = serverRouter({ default: '/404' }, [
+    ['/', (req, res) => client.html(req, res).pipe(res)],
+    ['/bundle.js', (req, res) => client.js(req, res).pipe(res)],
+    ['/bundle.css', (req, res) => client.css(req, res).pipe(res)],
+    ['/sw.js', (req, res) => worker.js(req, res).pipe(res)],
 
-    ['/h/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
-    ['/h/:token/subscribe', { post: subscribe }],
-    ['/h/:token/unsubscribe', unsubscribe],
-    ['/h/:token/notify', { get: notify, post: notify }]
+    ['/token', { get: (req, res) => send(res, 200, { token: uuid.v4() }) }],
+    ['/:token/subscribe', { post: subscribe }],
+    ['/:token/unsubscribe', unsubscribe],
+    ['/:token/notify', { get: notify, post: notify }],
+    ['/404', (req, res) => send(res, 404)]
   ])
-
-  function ensureTrailingSlash (handler) {
-    return (req, res) => {
-      if (!req.url.match(/\/$/)) return redirect(req, res, req.url + '/')
-      return handler(req, res)
-    }
-  }
-
-  function redirect (req, res, location) {
-    res.setHeader('Location', '/h/')
-    send(res, 301)
-  }
 
   async function sendError (req, res, err) {
     const { statusCode, message, stack } = err

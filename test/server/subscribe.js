@@ -10,7 +10,7 @@ test('/:token/subscribe saves subscription for a token', async t => {
   const { app, db } = setup()
 
   await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(SUBSCRIPTION)
   .expect(204)
 
@@ -24,7 +24,7 @@ test('/:token/subscribe sends 400 for missing data', async t => {
   const { app } = setup()
 
   let res = await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send({})
   .expect(400)
 
@@ -38,7 +38,7 @@ test('/:token/subscribe sends 400 for missing data', async t => {
 test('/:token/subscribe sends 400 for bad endpoint', async t => {
   const { app } = setup()
   let res = await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(xtend(SUBSCRIPTION, {
     endpoint: 'why cant i say the n word'
   }))
@@ -52,7 +52,7 @@ test('/:token/subscribe sends 400 for bad endpoint', async t => {
 test('/:token/subscribe sends 400 for non url safe base64 keys', async t => {
   const { app } = setup()
   let res = await request(app)
-  .post(`/h/${TOKEN}/subscribe`)
+  .post(`/${TOKEN}/subscribe`)
   .send(xtend(SUBSCRIPTION, {
     keys: {
       p256dh: SUBSCRIPTION.keys.p256dh + '💩',
@@ -71,7 +71,7 @@ test('/:token/subscribe fails for non-uuid tokens', async t => {
   const { app } = setup()
 
   const res = await request(app)
-  .post(`/h/💩/subscribe`)
+  .post(`/💩/subscribe`)
   .expect(400)
 
   t.is(res.text, 'Token must be a valid UUID')
