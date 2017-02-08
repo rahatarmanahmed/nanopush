@@ -1,9 +1,0 @@
-exports[`initView with notification permission denied 1`] = `"\"<p class=\\\"lh-copy o-60 measure\\\">Seems like you denied the request to show notifications. You\'re gonna have to reset that if you want to use this app.</p>\""`;
-
-exports[`initView with notification permission not yet granted 1`] = `"\"<p class=\\\"lh-copy o-60 measure\\\">We\'ll get started once you accept the request to show notifications.</p>\""`;
-
-exports[`initView with token not yet ready 1`] = `"\"<p class=\\\"lh-copy o-60 measure\\\">Registering web push notifications...</p>\""`;
-
-exports[`initView with unknown state 1`] = `"\"<p class=\\\"lh-copy o-60 measure\\\">We\'ll get started once you accept the request to show notifications.</p>\""`;
-
-exports[`initView without service worker support 1`] = `"\"<p class=\\\"lh-copy o-60 measure\\\">Your browser doesn\'t support web push notifications. Write to your local representative, or use something like Chrome or Firefox.</p>\""`;

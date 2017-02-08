@@ -28,10 +28,8 @@
     "babel-preset-latest": "^6.22.0",
     "babelify": "^7.3.0",
     "bankai": "^5.2.1",
-    "barracks": "^9.3.0",
+    "bel": "^4.5.1",
     "checkit": "^0.7.0",
-    "choo": "^4.0.3",
-    "choo-promise": "^1.0.0",
     "cross-env": "^3.1.4",
     "envify": "^4.0.0",
     "envobj": "^1.0.3",
@@ -42,12 +40,13 @@
     "level-sublevel": "^6.6.1",
     "localforage": "^1.4.3",
     "micro": "^6.2.0",
+    "nanomorph": "^2.1.3",
+    "nanoraf": "^2.1.3",
     "node-uuid": "^1.4.7",
     "pino": "^3.3.2",
     "server-router": "^4.0.2",
     "sheetify": "^6.0.1",
     "tachyons": "^4.6.1",
-    "web-push": "^3.2.1",
-    "yo-yo": "^1.4.0"
+    "web-push": "^3.2.1"
   }
 }
