@@ -1,5 +1,6 @@
 const window = require('global/window')
 const css = require('sheetify')
+const html = require('bel')
 const framework = require('./framework')
 const { getToken, saveToken, subscribeToken, unsubscribeToken } = require('./api')
 const { urlBase64ToUint8Array } = require('./util')
@@ -29,7 +30,7 @@ const horizontalFlip = css`
 const LoadingView = (state) => {
   let content
   if (state.err) {
-    content = f.html`
+    content = html`
       <span>
         Something went wrong...
         <pre class="">${state.err.stack}</pre>
@@ -46,7 +47,7 @@ const LoadingView = (state) => {
   } else {
     content = 'Something went wrong... sorry.'
   }
-  return f.html`
+  return html`
     <p class="lh-copy o-60 measure">${content}</p>
   `
 }
@@ -54,7 +55,7 @@ const LoadingView = (state) => {
 const Divider = (flip) => {
   var classes = 'nowrap overflow-hidden tc'
   if (flip) classes += ' ' + horizontalFlip
-  return f.html`
+  return html`
     <div class=${classes}>📌📌📌📌📌</div>
   `
 }
@@ -67,7 +68,7 @@ const MainView = (state, send) => {
     }
   }
 
-  return f.html`
+  return html`
     <div class="measure">
       <section class="mv4">
         <p class="lh-copy">
@@ -138,7 +139,7 @@ const MainView = (state, send) => {
 
 const AppView = (state, change) => {
   const currentView = state.token ? MainView : LoadingView
-  return f.html`
+  return html`
     <main class="helvetica bg-green washed-blue pa3">
       <h1 class="f3 fw7 mt0 mb3">nanopush 📌</h1>
       <div class="f5">

@@ -1,6 +1,5 @@
 const nanomorph = require('nanomorph')
 const nanoraf = require('nanoraf')
-const html = require('bel')
 
 function framework (viewFn) {
   let tree, currentState
@@ -26,7 +25,7 @@ function framework (viewFn) {
     return tree
   }
 
-  return { html, start, change, state }
+  return { start, change, state }
 }
 
 module.exports = framework
