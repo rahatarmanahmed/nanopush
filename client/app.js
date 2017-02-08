@@ -59,5 +59,4 @@ function render (state) {
     var newEl = App(state, send)
     yo.update(el, newEl)
   })
-  console.log(state)
 }
