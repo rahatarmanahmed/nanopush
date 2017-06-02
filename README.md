@@ -1,4 +1,6 @@
 # nanopush [![Build Status](https://travis-ci.org/rahatarmanahmed/nanopush.svg?branch=master)](https://travis-ci.org/rahatarmanahmed/nanopush)
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/rahatarmanahmed/nanopush.svg)](https://greenkeeper.io/)
 A tiny push notification app.
 
 ## Setup
